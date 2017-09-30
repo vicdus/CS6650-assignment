@@ -68,10 +68,6 @@
                 </executions>
                 <configuration>
                     <mainClass>client.EchoClient</mainClass>
-                    <arguments>
-                        <argument>foo</argument>
-                        <argument>bar</argument>
-                    </arguments>
                 </configuration>
             </plugin>
 

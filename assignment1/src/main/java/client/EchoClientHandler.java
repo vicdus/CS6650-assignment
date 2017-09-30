@@ -1,13 +1,12 @@
 package client;
 
-import Utilities.Timer;
+import Utilities.BufferedLogger;
+import Utilities.Stopwatch;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
+import javax.ws.rs.core.Response;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -15,47 +14,50 @@ public final class EchoClientHandler extends Thread {
     private final int iteration;
     private final CyclicBarrier cb;
     private final String URL;
+    private final BufferedLogger logger;
 
-    public EchoClientHandler(int iteration, String ip_address, int port, CyclicBarrier cb) {
+    public EchoClientHandler(int iteration, String ip_address, int port, String param, CyclicBarrier cb, BufferedLogger logger) {
         this.iteration = iteration;
         this.cb = cb;
-        this.URL = "http://" + ip_address + ":" + port + "/assignment1/";
+        this.URL = "http://" + ip_address + ":" + port + "/assignment1/" + param;
+        this.logger = logger;
     }
 
     @Override
     public void run() {
-        // redirect output to file
-        try {
-            System.setOut(new PrintStream(new File("log.txt")));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        Timer t = new Timer();
+        Stopwatch stopwatch = new Stopwatch();
+        Response response = null;
         for (int i = 0; i < iteration; i++) {
             long start = System.currentTimeMillis();
+
+            stopwatch.start();
             try {
-                t.start();
-                ClientBuilder.newClient().target(URL).request(MediaType.TEXT_PLAIN).post(Entity.text(null)).close();
+                response = ClientBuilder.newClient().target(URL).request(MediaType.TEXT_PLAIN).post(Entity.text(null));
+                if (response.getStatus() != 200) throw new Exception("failed for any reason");
             } catch (Exception e) {
-                System.out.println("POST FAILURE");
+                logger.log("POST FAILURE");
+            } finally {
+                if (response != null) response.close();
             }
-            System.out.println("POST " + t.readAndReset() + " " + start);
+            logger.log("POST " + stopwatch.readAndReset() + " " + start);
 
             start = System.currentTimeMillis();
+            stopwatch.readAndReset();
             try {
-                t.readAndReset();
-                ClientBuilder.newClient().target(URL).request(MediaType.TEXT_PLAIN).get().close();
+                response = ClientBuilder.newClient().target(URL).request(MediaType.TEXT_PLAIN).get();
+                if (response.getStatus() != 200) throw new Exception("failed for any reason");
             } catch (Exception e) {
-                System.out.println("GET FAILURE");
+                logger.log("GET FAILURE");
+            } finally {
+                if (response != null) response.close();
             }
-            System.out.println("GET " + t.readAndReset() + " " + start);
+            logger.log("GET " + stopwatch.readAndReset() + " " + start);
         }
 
         try {
             cb.await();
         } catch (BrokenBarrierException | InterruptedException e) {
-            System.out.println("CB FAILURE");
+            logger.log("CB FAILURE");
         }
     }
 }

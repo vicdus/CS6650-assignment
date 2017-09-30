@@ -1,6 +1,7 @@
 package client;
 
-import Utilities.Timer;
+import Utilities.BufferedLogger;
+import Utilities.Stopwatch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,11 +28,18 @@ public class EchoClient {
         String ip = params.get("ip");
         int port = Integer.parseInt(params.get("port"));
 
-        Timer timer = new Timer();
-        CyclicBarrier cb = new CyclicBarrier(threads, () -> System.out.println("WALL " + timer.readAndReset()));
-        timer.start();
+        BufferedLogger logger = new BufferedLogger();
+
+        Stopwatch stopwatch = new Stopwatch();
+        CyclicBarrier cb = new CyclicBarrier(threads, () -> {
+            logger.log("WALL " + stopwatch.readAndReset());
+            logger.persistLog();
+        });
+
+        String param = "some_string";
+        stopwatch.start();
         for (int i = 0; i < threads; i++) {
-            (new EchoClientHandler(iterations, ip, port, cb)).start();
+            (new EchoClientHandler(iterations, ip, port, param, cb, logger)).start();
         }
     }
 }

@@ -1,6 +1,6 @@
 package Utilities;
 
-public final class Timer {
+public final class Stopwatch {
     private Long t = null;
 
     public void start() {
