@@ -2,3 +2,4 @@
 target/
 assignment1/analysis.py
 *.iml
+*.ser
