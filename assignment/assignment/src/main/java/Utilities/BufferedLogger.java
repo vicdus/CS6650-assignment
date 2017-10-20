@@ -2,6 +2,7 @@ package Utilities;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -15,12 +16,10 @@ public class BufferedLogger {
 
     public void persistLog() {
         try {
-            System.setOut(new PrintStream(new File(fileName)));
+            PrintStream os = new PrintStream(new File(fileName));
+            buffer.forEach(os::println);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        }
-        for (String s : buffer) {
-            System.out.println(s);
         }
     }
 }

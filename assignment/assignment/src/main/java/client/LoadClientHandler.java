@@ -1,70 +1,53 @@
 package client;
 
 import Utilities.BufferedLogger;
+import Utilities.UninterruptibleCyclicBarrier;
 import bsdsass2testdata.RFIDLiftData;
 import lombok.Builder;
+import org.glassfish.jersey.client.ClientProperties;
 
+import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.BrokenBarrierException;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 
 @Builder
 public final class LoadClientHandler extends Thread {
     private final CyclicBarrier cb;
     private final BufferedLogger logger;
-    private final BlockingQueue<RFIDLiftData> queue;
+    private final ConcurrentLinkedQueue<RFIDLiftData> queue;
     private final String ip;
     private int port;
 
     private String buildURL(RFIDLiftData data) {
-
-
-        String res = "http://" + ip + ":" + port + "/assignment2/" // TODO
+        return "http://" + ip + ":" + port + "/assignment2/"
                 + "load/resortID/" + data.getResortID()
                 + "/dayNum/" + data.getDayNum()
                 + "/timestamp/" + data.getTime()
                 + "/skierID/" + data.getSkierID()
                 + "/liftID/" + data.getLiftID();
-
-        System.out.println(res);
-        return res;
     }
 
 
     @Override
     public void run() {
-        Response response = null;
+        Response response;
+        Client client = ClientBuilder.newClient()
+                .property(ClientProperties.CONNECT_TIMEOUT, Integer.MAX_VALUE)
+                .property(ClientProperties.READ_TIMEOUT, Integer.MAX_VALUE);
 
-        while (!queue.isEmpty()) {
-            try {
-                RFIDLiftData r = queue.take();
-                System.out.println(r);
-                response = ClientBuilder.newClient()
-                        .target(buildURL(r))
-                        .request(MediaType.TEXT_PLAIN)
-                        .post(Entity.text(null));
-                if (response.getStatus() != 200) throw new Exception();
-            } catch (InterruptedException e) {
-                System.out.println("Done!");
-            } catch (Exception e) {
-                System.out.println("ERROR STATUS CODE");
-            } finally {
-                if (response != null) response.close();
-            }
+        RFIDLiftData r = queue.poll();
+        while (r != null) {
+            response = client
+                    .target(buildURL(r))
+                    .request(MediaType.TEXT_PLAIN)
+                    .post(Entity.text(null));
+            response.close();
+            r = queue.poll();
         }
-
-        try {
-            cb.await();
-        } catch (InterruptedException e) {
-            System.out.println("Done!");
-        } catch (BrokenBarrierException e) {
-            System.out.println("BrokenBarrierException");
-        } finally {
-            if (response != null) response.close();
-        }
+        UninterruptibleCyclicBarrier.await(cb);
     }
 }
