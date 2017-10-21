@@ -56,7 +56,10 @@ public class LoadClient {
             System.exit(1);
         }
 
+
+//        RFIDDataIn = new ArrayList<>(RFIDDataIn.subList(0, 200));
         queue = new ConcurrentLinkedQueue<>(RFIDDataIn);
+
 
         threadInstances = IntStream.range(0, threads).mapToObj(x -> LoadClientHandler.builder()
                 .cb(cb)

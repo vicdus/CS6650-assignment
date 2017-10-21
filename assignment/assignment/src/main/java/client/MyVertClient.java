@@ -1,12 +1,10 @@
 package client;
 
-import bsdsass2testdata.RFIDLiftData;
 import org.glassfish.jersey.client.ClientProperties;
 import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -53,5 +51,4 @@ public class MyVertClient {
 
         System.out.println(r.readEntity(Integer.class));
     }
-
 }

@@ -19,7 +19,7 @@ public class BufferedLogger {
             PrintStream os = new PrintStream(new File(fileName));
             buffer.forEach(os::println);
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            System.err.println("Cannot create logging file");
         }
     }
 }

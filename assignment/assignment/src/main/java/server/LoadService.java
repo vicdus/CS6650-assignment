@@ -1,12 +1,16 @@
 package server;
 
+import Utilities.DBConnectionPoolWrapper;
 import Utilities.Counter;
-import Utilities.FakeStorage;
+import Utilities.RFIDLiftDataDAO;
 import bsdsass2testdata.RFIDLiftData;
+import org.apache.commons.dbutils.DbUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 
 @Path("load/resortID/{resortID}/dayNum/{dayNum}/timestamp/{timestamp}/skierID/{skierID}/liftID/{liftID}")
@@ -21,14 +25,21 @@ public class LoadService {
                            @PathParam("skierID") int skierID,
                            @PathParam("liftID") int liftID
     ) {
-        System.out.println(skierID + " " + dayNum);
         System.out.println("s = " + Counter.increase());
-
-        RFIDLiftData r = new RFIDLiftData(resortID, dayNum, timestamp, skierID, liftID);
-        FakeStorage.foo.add(r);
-        return Response
-                .status(200)
-                .entity("success")
-                .build();
+        RFIDLiftData r = new RFIDLiftData(resortID, dayNum, skierID, liftID, timestamp);
+        RFIDLiftDataDAO dao;
+        Connection c = null;
+        try {
+            c = DBConnectionPoolWrapper.getConnection();
+            new RFIDLiftDataDAO(c).load(r);
+            return Response
+                    .status(200)
+                    .entity("success")
+                    .build();
+        } catch (SQLException e) {
+            return Response.serverError().build();
+        } finally {
+            DbUtils.closeQuietly(c);
+        }
     }
 }

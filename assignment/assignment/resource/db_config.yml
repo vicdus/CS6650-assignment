@@ -1,0 +1,4 @@
+db_endpoint: localhost
+db_name: postgres
+db_port: 5432
+table_name: rfidliftdata
