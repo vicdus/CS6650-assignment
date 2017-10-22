@@ -4,6 +4,7 @@ import Utilities.BufferedLogger;
 import Utilities.UninterruptibleCyclicBarrier;
 import bsdsass2testdata.RFIDLiftData;
 import lombok.Builder;
+
 import org.glassfish.jersey.client.ClientProperties;
 
 import javax.ws.rs.client.Client;
@@ -11,6 +12,7 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 
@@ -30,7 +32,6 @@ public final class LoadClientHandler extends Thread {
                 + "/skierID/" + data.getSkierID()
                 + "/liftID/" + data.getLiftID();
     }
-
 
     @Override
     public void run() {

@@ -4,11 +4,13 @@ import Utilities.DBConnectionPoolWrapper;
 import Utilities.Counter;
 import Utilities.RFIDLiftDataDAO;
 import bsdsass2testdata.RFIDLiftData;
+
 import org.apache.commons.dbutils.DbUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 

@@ -1,8 +1,8 @@
 package client;
 
+import Utilities.OperationWrapper;
+
 import org.glassfish.jersey.client.ClientProperties;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
 import javax.ws.rs.client.ClientBuilder;
@@ -33,14 +33,7 @@ public class MyVertClient {
     }
 
     private void start(String[] args) {
-        CmdLineParser parser = new CmdLineParser(this);
-
-        try {
-            parser.parseArgument(args);
-        } catch (CmdLineException e) {
-            System.err.println("Invalid arguments!");
-            System.exit(1);
-        }
+        OperationWrapper.parseSilently(args, this, "Invalid arguments!");
 
         Response r = ClientBuilder.newClient()
                 .property(ClientProperties.CONNECT_TIMEOUT, Integer.MAX_VALUE)
@@ -48,7 +41,6 @@ public class MyVertClient {
                 .target(buildURL())
                 .request(MediaType.TEXT_PLAIN)
                 .get();
-
         System.out.println(r.readEntity(Integer.class));
     }
 }

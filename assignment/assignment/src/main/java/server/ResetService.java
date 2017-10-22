@@ -5,29 +5,29 @@ import Utilities.RFIDLiftDataDAO;
 
 import org.apache.commons.dbutils.DbUtils;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DELETE;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.sql.Connection;
 import java.sql.SQLException;
 
-@Path("myvert/skierID/{skierID}/dayNum/{dayNum}")
+@Path("/reset")
 @Produces(MediaType.TEXT_PLAIN)
-public class MyVertService {
-
-    @GET
-    public Response get(@PathParam("skierID") int skierID, @PathParam("dayNum") int dayNum) {
+public class ResetService {
+    @DELETE
+    public Response resetAll() {
         Connection conn = null;
         try {
             conn = DBConnectionPoolWrapper.getConnection();
-            RFIDLiftDataDAO db = new RFIDLiftDataDAO(conn);
-            return Response.ok(db.vert(skierID, dayNum).toString(), MediaType.TEXT_PLAIN).build();
+            new RFIDLiftDataDAO(conn).reset();
+            return Response.ok().build();
         } catch (SQLException e) {
             return Response.serverError().build();
         } finally {
             DbUtils.closeQuietly(conn);
         }
     }
-
 }

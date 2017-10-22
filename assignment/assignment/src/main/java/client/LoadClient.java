@@ -1,11 +1,11 @@
 package client;
 
 import Utilities.BufferedLogger;
+import Utilities.OperationWrapper;
 import Utilities.Stopwatch;
 import Utilities.UninterruptibleCyclicBarrier;
 import bsdsass2testdata.RFIDLiftData;
-import org.kohsuke.args4j.CmdLineException;
-import org.kohsuke.args4j.CmdLineParser;
+
 import org.kohsuke.args4j.Option;
 
 import java.io.FileInputStream;
@@ -33,13 +33,7 @@ public class LoadClient {
 
 
     private void start(String[] args) {
-        CmdLineParser parser = new CmdLineParser(this);
-        try {
-            parser.parseArgument(args);
-        } catch (CmdLineException e) {
-            System.err.println("Invalid arguments!");
-            System.exit(1);
-        }
+        OperationWrapper.parseSilently(args, this, "Invalid arguments!");
 
         ConcurrentLinkedQueue<RFIDLiftData> queue;
         List<LoadClientHandler> threadInstances;
@@ -56,10 +50,8 @@ public class LoadClient {
             System.exit(1);
         }
 
-
-//        RFIDDataIn = new ArrayList<>(RFIDDataIn.subList(0, 200));
+        RFIDDataIn = new ArrayList<>(RFIDDataIn.subList(0, 200));
         queue = new ConcurrentLinkedQueue<>(RFIDDataIn);
-
 
         threadInstances = IntStream.range(0, threads).mapToObj(x -> LoadClientHandler.builder()
                 .cb(cb)
