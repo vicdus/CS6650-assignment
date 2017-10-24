@@ -1,8 +1,8 @@
 package client;
 
 import Utilities.BufferedLogger;
+import Utilities.OperationWrapper;
 import Utilities.Stopwatch;
-import Utilities.UninterruptibleCyclicBarrier;
 import bsdsass2testdata.RFIDLiftData;
 import lombok.Builder;
 
@@ -55,6 +55,7 @@ public final class LoadClientHandler extends Thread {
             s.start();
             r = queue.poll();
         }
-        UninterruptibleCyclicBarrier.await(cb);
+        OperationWrapper.uninterruptibleCyclicBarrierAwait(cb);
     }
+
 }

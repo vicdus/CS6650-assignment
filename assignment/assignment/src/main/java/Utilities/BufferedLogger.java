@@ -6,6 +6,8 @@ import java.io.PrintStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import lombok.AllArgsConstructor;
+import lombok.Cleanup;
+import lombok.SneakyThrows;
 
 
 @AllArgsConstructor
@@ -15,14 +17,13 @@ public class BufferedLogger {
 
     public void log(String message) {
         this.buffer.add(message);
+        if (buffer.size() % 100 == 0) System.out.println(buffer.size());
     }
 
+    @SneakyThrows(FileNotFoundException.class)
     public void persistLog() {
-        try {
-            PrintStream os = new PrintStream(new File(fileName));
-            buffer.forEach(os::println);
-        } catch (FileNotFoundException e) {
-            System.err.println("Cannot create logging file");
-        }
+        @Cleanup
+        PrintStream os = new PrintStream(new File(fileName));
+        buffer.forEach(os::println);
     }
 }

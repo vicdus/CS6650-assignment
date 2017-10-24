@@ -4,3 +4,6 @@ assignment1/analysis.py
 *.iml
 *.ser
 assignment/assignment/resource/credentials.yml
+log/
+*.pem
+*.txt

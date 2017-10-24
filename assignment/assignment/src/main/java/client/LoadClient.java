@@ -3,14 +3,10 @@ package client;
 import Utilities.BufferedLogger;
 import Utilities.OperationWrapper;
 import Utilities.Stopwatch;
-import Utilities.UninterruptibleCyclicBarrier;
 import bsdsass2testdata.RFIDLiftData;
 
 import org.kohsuke.args4j.Option;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -43,17 +39,8 @@ public class LoadClient {
         BufferedLogger logger = new BufferedLogger(logFile);
         Stopwatch stopwatch = Stopwatch.createStopwatch();
         CyclicBarrier cb = new CyclicBarrier(threads + 1);
-        ArrayList RFIDDataIn = null;
 
-        try {
-            RFIDDataIn = (ArrayList) (new ObjectInputStream(new FileInputStream(sourcePath))).readObject();
-        } catch (IOException | ClassNotFoundException e) {
-            System.err.println("Loading data failed.");
-            System.exit(1);
-        }
-
-        RFIDDataIn = new ArrayList<>(RFIDDataIn.subList(0, 10000));
-        queue = new ConcurrentLinkedQueue<>(RFIDDataIn);
+        queue = new ConcurrentLinkedQueue<>(OperationWrapper.loadData(sourcePath));
 
         threadInstances = IntStream.range(0, threads).mapToObj(x -> LoadClientHandler.builder()
                 .cb(cb)
@@ -67,7 +54,7 @@ public class LoadClient {
         stopwatch.start();
         threadInstances.forEach(LoadClientHandler::start);
 
-        UninterruptibleCyclicBarrier.await(cb);
+        OperationWrapper.uninterruptibleCyclicBarrierAwait(cb);
 
         logger.log("WALL " + stopwatch.readAndReset());
         logger.persistLog();

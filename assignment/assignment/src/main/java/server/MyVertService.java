@@ -2,6 +2,7 @@ package server;
 
 import Utilities.DBConnectionPoolWrapper;
 import Utilities.RFIDLiftDataDAO;
+import lombok.SneakyThrows;
 
 import org.apache.commons.dbutils.DbUtils;
 
@@ -17,17 +18,9 @@ import java.sql.SQLException;
 public class MyVertService {
 
     @GET
-    public Response get(@PathParam("skierID") int skierID, @PathParam("dayNum") int dayNum) {
-        Connection conn = null;
-        try {
-            conn = DBConnectionPoolWrapper.getConnection();
-            RFIDLiftDataDAO db = new RFIDLiftDataDAO(conn);
-            return Response.ok(db.vert(skierID, dayNum).toString(), MediaType.TEXT_PLAIN).build();
-        } catch (SQLException e) {
-            return Response.serverError().build();
-        } finally {
-            DbUtils.closeQuietly(conn);
-        }
+    public Response get(@PathParam("skierID") int skierID, @PathParam("dayNum") int dayNum) throws SQLException {
+        Integer[] res = new RFIDLiftDataDAO(DBConnectionPoolWrapper.getConnection()).vert(skierID, dayNum);
+        return Response.ok(res[0] + " " + res[1], MediaType.TEXT_PLAIN).build();
     }
 
 }

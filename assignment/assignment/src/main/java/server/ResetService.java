@@ -17,6 +17,7 @@ import java.sql.SQLException;
 @Path("/reset")
 @Produces(MediaType.TEXT_PLAIN)
 public class ResetService {
+
     @DELETE
     public Response resetAll() {
         Connection conn = null;
