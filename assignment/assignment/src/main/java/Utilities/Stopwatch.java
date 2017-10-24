@@ -1,5 +1,11 @@
 package Utilities;
 
+import com.google.common.base.Preconditions;
+
+import lombok.RequiredArgsConstructor;
+
+
+@RequiredArgsConstructor(staticName = "createStopwatch")
 public final class Stopwatch {
     private Long t = null;
 
@@ -8,11 +14,18 @@ public final class Stopwatch {
     }
 
     public long readAndReset() {
-        if (t == null) {
-            throw new RuntimeException("use without initialization");
-        }
-        long res = System.currentTimeMillis() - t;
+        long res = this.read();
         t = System.currentTimeMillis();
         return res;
+    }
+
+    public long read() {
+        Preconditions.checkArgument(t != null, "use without initialization");
+        return System.currentTimeMillis() - t;
+    }
+
+    public long getStartTime() {
+        Preconditions.checkArgument(t != null, "use without initialization");
+        return t;
     }
 }

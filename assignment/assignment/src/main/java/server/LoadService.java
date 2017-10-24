@@ -27,9 +27,7 @@ public class LoadService {
                            @PathParam("skierID") int skierID,
                            @PathParam("liftID") int liftID
     ) {
-        System.out.println("s = " + Counter.increase());
         RFIDLiftData r = new RFIDLiftData(resortID, dayNum, skierID, liftID, timestamp);
-        RFIDLiftDataDAO dao;
         Connection c = null;
         try {
             c = DBConnectionPoolWrapper.getConnection();

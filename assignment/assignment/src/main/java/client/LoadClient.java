@@ -22,7 +22,7 @@ public class LoadClient {
     @Option(name = "-ip", usage = "ip address, default: localhost")
     private String ip = "localhost";
 
-    @Option(name = "-threads", usage = "threads number, defalut: 10")
+    @Option(name = "-threads", usage = "threads number, default: 10")
     private int threads = 10;
 
     @Option(name = "-port", usage = "port number, defalut: 8080")
@@ -31,6 +31,8 @@ public class LoadClient {
     @Option(name = "-source", usage = "ser file path")
     private String sourcePath = "./resource/BSDSAssignment2Day1.ser";
 
+    @Option(name = "-logfile", usage = "path of logging file, default: log.txt")
+    private String logFile = "log.txt";
 
     private void start(String[] args) {
         OperationWrapper.parseSilently(args, this, "Invalid arguments!");
@@ -38,8 +40,8 @@ public class LoadClient {
         ConcurrentLinkedQueue<RFIDLiftData> queue;
         List<LoadClientHandler> threadInstances;
 
-        BufferedLogger logger = new BufferedLogger();
-        Stopwatch stopwatch = new Stopwatch();
+        BufferedLogger logger = new BufferedLogger(logFile);
+        Stopwatch stopwatch = Stopwatch.createStopwatch();
         CyclicBarrier cb = new CyclicBarrier(threads + 1);
         ArrayList RFIDDataIn = null;
 
@@ -50,7 +52,7 @@ public class LoadClient {
             System.exit(1);
         }
 
-        RFIDDataIn = new ArrayList<>(RFIDDataIn.subList(0, 200));
+        RFIDDataIn = new ArrayList<>(RFIDDataIn.subList(0, 10000));
         queue = new ConcurrentLinkedQueue<>(RFIDDataIn);
 
         threadInstances = IntStream.range(0, threads).mapToObj(x -> LoadClientHandler.builder()

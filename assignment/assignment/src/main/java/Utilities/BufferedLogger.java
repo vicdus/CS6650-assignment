@@ -5,9 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import lombok.AllArgsConstructor;
+
+
+@AllArgsConstructor
 public class BufferedLogger {
-    private static final String fileName = "log.txt";
-    private ConcurrentLinkedQueue<String> buffer = new ConcurrentLinkedQueue<>();
+    private String fileName;
+    private final ConcurrentLinkedQueue<String> buffer = new ConcurrentLinkedQueue<>();
 
     public void log(String message) {
         this.buffer.add(message);

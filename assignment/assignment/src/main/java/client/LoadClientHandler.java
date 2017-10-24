@@ -1,6 +1,7 @@
 package client;
 
 import Utilities.BufferedLogger;
+import Utilities.Stopwatch;
 import Utilities.UninterruptibleCyclicBarrier;
 import bsdsass2testdata.RFIDLiftData;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
+
 
 @Builder
 public final class LoadClientHandler extends Thread {
@@ -39,14 +41,18 @@ public final class LoadClientHandler extends Thread {
         Client client = ClientBuilder.newClient()
                 .property(ClientProperties.CONNECT_TIMEOUT, Integer.MAX_VALUE)
                 .property(ClientProperties.READ_TIMEOUT, Integer.MAX_VALUE);
+        Stopwatch s = Stopwatch.createStopwatch();
 
         RFIDLiftData r = queue.poll();
         while (r != null) {
+            s.start();
             response = client
                     .target(buildURL(r))
                     .request(MediaType.TEXT_PLAIN)
                     .post(Entity.text(null));
             response.close();
+            logger.log("POST " + s.read() + " " + s.getStartTime());
+            s.start();
             r = queue.poll();
         }
         UninterruptibleCyclicBarrier.await(cb);
