@@ -21,7 +21,7 @@ public class LoadClient {
     @Option(name = "-threads", usage = "threads number, default: 10")
     private int threads = 10;
 
-    @Option(name = "-port", usage = "port number, defalut: 8080")
+    @Option(name = "-port", usage = "port number, default: 8080")
     private int port = 8080;
 
     @Option(name = "-source", usage = "ser file path")
