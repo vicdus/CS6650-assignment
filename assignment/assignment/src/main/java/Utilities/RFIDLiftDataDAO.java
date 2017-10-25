@@ -1,6 +1,9 @@
 package Utilities;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import org.apache.commons.dbutils.DbUtils;
@@ -48,7 +51,7 @@ public class RFIDLiftDataDAO {
             res += lift * liftHeights.get(lift);
             count++;
         }
-        DbUtils.closeQuietly(c, p, rs);
+        DbUtils.closeQuietly(null, p, rs);
         return new Integer[]{count, res};
     }
 
@@ -62,6 +65,6 @@ public class RFIDLiftDataDAO {
         p.setInt(4, data.getLiftID());
         p.setInt(5, data.getTime());
         p.execute();
-        DbUtils.closeQuietly(c, p, null);
+        DbUtils.closeQuietly(null, p, null);
     }
 }

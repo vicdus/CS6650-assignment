@@ -8,7 +8,7 @@ import subprocess
 fns = subprocess.check_output("ls log/", shell=True).decode("utf-8")
 fileNames = [v for v in fns.split("\n") if len(v) > 0]
 
-print("\t\t\t".join([str(v) for v in ["Type", "Client", "Server", "DB", "t", "p50", "p99"]]))
+print("\t".join([str(v) for v in ["Type", "Client", "Server", "DB", "t", "wall min", "avg", "p50", "p95", "p99"]]))
 for name in fileNames:
 	client, server, db = name.split(".")[0].split("-")[1:]
 	
@@ -19,8 +19,10 @@ for name in fileNames:
 
 	t = int(len(latency) / (wallTime / 1000))
 	p50 = np.percentile(latency, 50)
+	avg = round(np.mean(latency), 2)
+	p95 = np.percentile(latency, 95)
 	p99 = np.percentile(latency, 99)
-	print("\t\t\t".join([str(v) for v in [name.split("-")[0], client, server, db, t, p50, p99]]))
+	print("\t".join([str(v) for v in [name.split("-")[0], client, server, db, t, round(wallTime / (60 * 1000), 2), avg, p50, p95, p99]]))
 
 
 

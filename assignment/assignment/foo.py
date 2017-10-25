@@ -55,7 +55,6 @@ def runWrtie(clientThread, serverThread, dbConnection):
 	logfile = './log/log-{0}-{1}-{2}.txt'.format(clientThread, serverThread, dbConnection)
 	cmd = u'''mvn compile exec:java -Dexec.mainClass="client.LoadClient" -Dexec.args="-threads={0} -logfile={1} -ip={2}"'''.format(clientThread, logfile, EC2_IP)
 	subprocess.call(cmd, shell=True, stdout=open(os.devnull, 'w'))
-	subprocess.call('''curl -X "DELETE" http://ec2-52-37-136-216.us-west-2.compute.amazonaws.com:8080/assignment2/reset''', shell=True)
 	serverSSH.close()
 	
 	print("finish!")
@@ -97,16 +96,17 @@ def runBoth(serverThread, dbConnection):
 
 
 
-runBoth(200, 20)
+#runBoth(200, 20)
 
-#clientThreads = range(1, 101, 20)
-#serverThreads = range(1, 101, 20)
-#dbConns = range(1, 101, 20)
-#
-#params = [[i, j, k] for i in clientThreads for j in serverThreads for k in dbConns if i > j and j > k]
-#
-#print(params)
-#print(len(params))
+clientThreads = [10, 20, 40, 80, 160]
+serverThreads = [10, 20, 40, 80, 160]
+dbConns = [10, 20, 40, 80, 160]
+
+params = [[i, j, k] for i in clientThreads for j in serverThreads for k in dbConns if i > j and j > k]
+print(params)
+print(len(params))
+
+runWrtie(80, 40, 20)
 #for p in params[5:]:
 #	runWrtie(p[0], p[1], p[2])
 
