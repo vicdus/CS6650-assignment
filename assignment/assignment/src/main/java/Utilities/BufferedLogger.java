@@ -17,7 +17,7 @@ public class BufferedLogger {
 
     public void log(String message) {
         this.buffer.add(message);
-        if (buffer.size() % 100 == 0) System.out.println(buffer.size());
+        if (buffer.size() % 1000 == 0) System.out.println(buffer.size());
     }
 
     @SneakyThrows(FileNotFoundException.class)

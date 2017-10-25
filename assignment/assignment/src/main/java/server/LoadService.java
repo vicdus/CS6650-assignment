@@ -24,7 +24,6 @@ public class LoadService {
                            @PathParam("skierID") int skierID,
                            @PathParam("liftID") int liftID
     ) {
-        System.out.println(Counter.increase());
         LoadBuffer.put(new RFIDLiftData(resortID, dayNum, skierID, liftID, timestamp));
         return Response.ok("success").build();
     }

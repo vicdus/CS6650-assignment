@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Map;
 
+import lombok.SneakyThrows;
+
 public class DBConnectionPoolWrapper {
     private static BasicDataSource ds;
 
@@ -26,6 +28,9 @@ public class DBConnectionPoolWrapper {
         ds.setUsername(USR);
         ds.setPassword(PWD);
         ds.setMaxActive(DB_CONNECTION_POOL_SIZE);
+        ds.setInitialSize(10);
+        ds.setTestOnBorrow(false);
+        ds.setDefaultAutoCommit(false);
     }
 
     public static Connection getConnection() throws SQLException {

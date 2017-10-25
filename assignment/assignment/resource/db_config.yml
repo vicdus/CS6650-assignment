@@ -2,4 +2,4 @@ db_endpoint: db.cv7ms5azda3e.us-west-2.rds.amazonaws.com
 db_name: skier
 db_port: 5432
 table_name: rfidliftdata
-db_connection_pool_size: 20
+db_connection_pool_size: 25

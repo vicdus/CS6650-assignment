@@ -7,3 +7,7 @@ assignment/assignment/resource/credentials.yml
 log/
 *.pem
 *.txt
+
+assignment/assignment/run.py
+
+assignment/assignment/foo.py

@@ -21,6 +21,8 @@ public class RFIDLiftDataDAO {
     private static final String LOAD_SQL = "INSERT INTO RFIDLiftData (resortID, dayNum, skierID, liftID, time) VALUES (?,?,?,?,?)";
     private static final String VERT_SQL = "SELECT liftID FROM RFIDLiftData WHERE skierID=? AND dayNum=?";
     private static final String RESET_SQL = "DELETE FROM RFIDLiftData";
+    private static final String COMMIT_SQL = "COMMIT";
+
     private static Map<Integer, Integer> liftHeights;
     private Connection c;
 
@@ -32,6 +34,9 @@ public class RFIDLiftDataDAO {
         liftHeights = builder.build();
     }
 
+    public void commit() throws SQLException {
+        c.createStatement().execute(COMMIT_SQL);
+    }
 
     public void reset() throws SQLException {
         c.createStatement().execute(RESET_SQL);

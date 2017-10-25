@@ -26,7 +26,7 @@ public class OperationWrapper {
     }
 
     @SneakyThrows
-    static Map<String, String> readConfig(String ymlFilePath) {
+    public static Map<String, String> readConfig(String ymlFilePath) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         ((Map<Object, Object>) Yaml.load(new File(ymlFilePath))).forEach((k, v) -> builder.put(k.toString(), v.toString()));
         return builder.build();

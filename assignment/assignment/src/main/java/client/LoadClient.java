@@ -41,7 +41,6 @@ public class LoadClient {
         CyclicBarrier cb = new CyclicBarrier(threads + 1);
 
         queue = new ConcurrentLinkedQueue<>(OperationWrapper.loadData(sourcePath));
-
         threadInstances = IntStream.range(0, threads).mapToObj(x -> LoadClientHandler.builder()
                 .cb(cb)
                 .logger(logger)
