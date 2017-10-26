@@ -1,7 +1,8 @@
-package Utilities;
+package utilities;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +16,11 @@ import org.kohsuke.args4j.CmdLineParser;
 import com.google.common.collect.*;
 
 import bsdsass2testdata.RFIDLiftData;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
-
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OperationWrapper {
 
     @SneakyThrows
@@ -30,11 +33,6 @@ public class OperationWrapper {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         ((Map<Object, Object>) Yaml.load(new File(ymlFilePath))).forEach((k, v) -> builder.put(k.toString(), v.toString()));
         return builder.build();
-    }
-
-
-    public static void wrapException(Exception e) {
-        throw new RuntimeException(e);
     }
 
     public static void uninterruptibleCyclicBarrierAwait(CyclicBarrier cb) {
@@ -55,8 +53,11 @@ public class OperationWrapper {
         }
     }
 
-    @SneakyThrows
-    public static List<RFIDLiftData> loadData(String src) {
-        return (ArrayList) (new ObjectInputStream(new FileInputStream(src))).readObject();
+    public static List<RFIDLiftData> loadData(String src) throws IOException, ClassNotFoundException {
+        try (FileInputStream fis = new FileInputStream(src)) {
+            try (ObjectInputStream ois = new ObjectInputStream(fis)) {
+                return (ArrayList) (ois).readObject();
+            }
+        }
     }
 }

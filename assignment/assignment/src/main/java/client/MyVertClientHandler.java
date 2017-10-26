@@ -10,9 +10,9 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientProperties;
 
-import Utilities.BufferedLogger;
-import Utilities.OperationWrapper;
-import Utilities.Stopwatch;
+import utilities.BufferedLogger;
+import utilities.OperationWrapper;
+import utilities.Stopwatch;
 import lombok.Builder;
 
 @Builder

@@ -1,8 +1,8 @@
 package client;
 
-import Utilities.BufferedLogger;
-import Utilities.OperationWrapper;
-import Utilities.Stopwatch;
+import utilities.BufferedLogger;
+import utilities.OperationWrapper;
+import utilities.Stopwatch;
 import bsdsass2testdata.RFIDLiftData;
 import lombok.Builder;
 

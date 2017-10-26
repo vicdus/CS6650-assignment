@@ -1,9 +1,11 @@
-package Utilities;
+package utilities;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Map;
 
 import org.apache.commons.dbutils.DbUtils;
@@ -35,41 +37,45 @@ public class RFIDLiftDataDAO {
     }
 
     public void commit() throws SQLException {
-        c.createStatement().execute(COMMIT_SQL);
+        try (Statement s = c.createStatement()) {
+            s.execute(COMMIT_SQL);
+        }
     }
 
     public void reset() throws SQLException {
-        c.createStatement().execute(RESET_SQL);
+        try (Statement s = c.createStatement()) {
+            s.execute(RESET_SQL);
+        }
     }
 
     public Integer[] vert(int skierID, int dayNum) throws SQLException {
-        PreparedStatement p;
-        ResultSet rs;
-        p = c.prepareCall(VERT_SQL);
-        p.setInt(1, skierID);
-        p.setInt(2, dayNum);
-        rs = p.executeQuery();
-
-        int res = 0, count = 0;
-        while (rs.next()) {
-            int lift = rs.getInt(1);
-            res += lift * liftHeights.get(lift);
-            count++;
+        try (CallableStatement p = c.prepareCall(VERT_SQL)) {
+            p.setInt(1, skierID);
+            p.setInt(2, dayNum);
+            try (ResultSet rs = p.executeQuery()) {
+                int res = 0;
+                int count = 0;
+                while (rs.next()) {
+                    int lift = rs.getInt(1);
+                    res += lift * liftHeights.get(lift);
+                    count++;
+                }
+                DbUtils.closeQuietly(null, p, rs);
+                return new Integer[]{count, res};
+            }
         }
-        DbUtils.closeQuietly(null, p, rs);
-        return new Integer[]{count, res};
     }
 
     public void load(RFIDLiftData data) throws SQLException {
         Preconditions.checkArgument(c != null, "not init yet!");
-        PreparedStatement p;
-        p = c.prepareStatement(LOAD_SQL);
-        p.setInt(1, data.getResortID());
-        p.setInt(2, data.getDayNum());
-        p.setInt(3, data.getSkierID());
-        p.setInt(4, data.getLiftID());
-        p.setInt(5, data.getTime());
-        p.execute();
-        DbUtils.closeQuietly(null, p, null);
+        try (PreparedStatement p = c.prepareStatement(LOAD_SQL)) {
+            p.setInt(1, data.getResortID());
+            p.setInt(2, data.getDayNum());
+            p.setInt(3, data.getSkierID());
+            p.setInt(4, data.getLiftID());
+            p.setInt(5, data.getTime());
+            p.execute();
+            DbUtils.closeQuietly(null, p, null);
+        }
     }
 }

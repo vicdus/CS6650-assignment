@@ -1,7 +1,7 @@
 package server;
 
-import Utilities.DBConnectionPoolWrapper;
-import Utilities.RFIDLiftDataDAO;
+import utilities.DBConnectionPoolWrapper;
+import utilities.RFIDLiftDataDAO;
 
 import org.apache.commons.dbutils.DbUtils;
 

@@ -1,4 +1,4 @@
-package Utilities;
+package utilities;
 
 import com.google.common.base.Preconditions;
 

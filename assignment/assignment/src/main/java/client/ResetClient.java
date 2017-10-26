@@ -1,6 +1,6 @@
 package client;
 
-import Utilities.OperationWrapper;
+import utilities.OperationWrapper;
 
 import org.kohsuke.args4j.Option;
 
@@ -26,7 +26,6 @@ public class ResetClient {
                 .newClient()
                 .target(buildURL())
                 .request(MediaType.TEXT_PLAIN).delete();
-        System.out.println("reset table!");
     }
 
     public static void main(String[] args) {

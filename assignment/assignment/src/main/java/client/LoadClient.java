@@ -1,12 +1,13 @@
 package client;
 
-import Utilities.BufferedLogger;
-import Utilities.OperationWrapper;
-import Utilities.Stopwatch;
+import utilities.BufferedLogger;
+import utilities.OperationWrapper;
+import utilities.Stopwatch;
 import bsdsass2testdata.RFIDLiftData;
 
 import org.kohsuke.args4j.Option;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class LoadClient {
     @Option(name = "-logfile", usage = "path of logging file, default: log.txt")
     private String logFile = "log.txt";
 
-    private void start(String[] args) {
+    private void start(String[] args) throws IOException, ClassNotFoundException {
         OperationWrapper.parseSilently(args, this, "Invalid arguments!");
 
         ConcurrentLinkedQueue<RFIDLiftData> queue;
@@ -60,7 +61,7 @@ public class LoadClient {
     }
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         new LoadClient().start(args);
     }
 }

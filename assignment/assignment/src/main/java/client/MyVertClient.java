@@ -1,24 +1,18 @@
 package client;
 
-import java.util.HashSet;
+import java.io.IOException;
 import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import Utilities.BufferedLogger;
-import Utilities.OperationWrapper;
-import Utilities.Stopwatch;
+import utilities.BufferedLogger;
+import utilities.OperationWrapper;
+import utilities.Stopwatch;
 import bsdsass2testdata.RFIDLiftData;
 
-import org.glassfish.jersey.client.ClientProperties;
 import org.kohsuke.args4j.Option;
-
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 public class MyVertClient {
     @Option(name = "-ip", usage = "ip address, default: localhost")
@@ -37,12 +31,12 @@ public class MyVertClient {
     private String sourcePath = "./resource/BSDSAssignment2Day1.ser";
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException {
         new MyVertClient().start(args);
     }
 
 
-    private void start(String[] args) {
+    private void start(String[] args) throws IOException, ClassNotFoundException {
         OperationWrapper.parseSilently(args, this, "Invalid arguments!");
 
 

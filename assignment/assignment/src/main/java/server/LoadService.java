@@ -1,6 +1,5 @@
 package server;
 
-import Utilities.Counter;
 import bsdsass2testdata.RFIDLiftData;
 
 import javax.ws.rs.Consumes;
