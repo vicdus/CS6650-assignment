@@ -29,7 +29,7 @@ public class OperationWrapper {
     }
 
     @SneakyThrows
-    public static Map<String, String> readConfig(String ymlFilePath) {
+    public synchronized static Map<String, String> readConfig(String ymlFilePath) {
         ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
         ((Map<Object, Object>) Yaml.load(new File(ymlFilePath))).forEach((k, v) -> builder.put(k.toString(), v.toString()));
         return builder.build();
@@ -53,7 +53,7 @@ public class OperationWrapper {
         }
     }
 
-    public static List<RFIDLiftData> loadData(String src) throws IOException, ClassNotFoundException {
+    public synchronized static List<RFIDLiftData> loadData(String src) throws IOException, ClassNotFoundException {
         try (FileInputStream fis = new FileInputStream(src)) {
             try (ObjectInputStream ois = new ObjectInputStream(fis)) {
                 return (ArrayList) (ois).readObject();

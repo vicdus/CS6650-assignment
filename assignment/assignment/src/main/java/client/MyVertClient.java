@@ -15,14 +15,9 @@ import bsdsass2testdata.RFIDLiftData;
 import org.kohsuke.args4j.Option;
 
 public class MyVertClient {
-    @Option(name = "-ip", usage = "ip address, default: localhost")
-    private String ip = "localhost";
 
-    @Option(name = "-port", usage = "port number, defalut: 8080")
-    private int port = 8080;
-
-    @Option(name = "-logfile", usage = "path of logging file, default: log.txt")
-    private String logFile = "log.txt";
+    private static final String LOGGER_NAME = "MyVertClientLogger";
+    private static final String LOG_FILE = "MyVertClientLog.txt";
 
     @Option(name = "-threads", usage = "threads number, default: 100")
     private int threads = 100;
@@ -39,11 +34,10 @@ public class MyVertClient {
     private void start(String[] args) throws IOException, ClassNotFoundException {
         OperationWrapper.parseSilently(args, this, "Invalid arguments!");
 
-
         ConcurrentLinkedQueue<Integer[]> queue;
         List<MyVertClientHandler> threadInstances;
 
-        BufferedLogger logger = new BufferedLogger(logFile);
+        BufferedLogger logger = BufferedLogger.getOrCreateLogger(LOGGER_NAME, LOG_FILE);
         Stopwatch stopwatch = Stopwatch.createStopwatch();
         CyclicBarrier cb = new CyclicBarrier(threads + 1);
 
@@ -60,8 +54,8 @@ public class MyVertClient {
                 .cb(cb)
                 .logger(logger)
                 .queue(queue)
-                .ip(ip)
-                .port(port)
+                .ip(OperationWrapper.readConfig("./resource/end_points.yml").get("server_ip"))
+                .port(Integer.parseInt(OperationWrapper.readConfig("./resource/end_points.yml").get("server_port")))
                 .build()
         ).collect(Collectors.toList());
 
@@ -69,6 +63,6 @@ public class MyVertClient {
         threadInstances.forEach(MyVertClientHandler::start);
         OperationWrapper.uninterruptibleCyclicBarrierAwait(cb);
         logger.log("WALL " + stopwatch.readAndReset());
-        logger.persistLog();
+        logger.persist();
     }
 }

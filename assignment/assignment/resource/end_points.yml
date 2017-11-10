@@ -1,0 +1,7 @@
+#server_ip: ec2-52-37-136-216.us-west-2.compute.amazonaws.com
+server_ip: localhost
+server_port: 8080
+
+#db_ip: db.cv7ms5azda3e.us-west-2.rds.amazonaws.com
+db_ip: localhost
+db_port: 5432

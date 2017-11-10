@@ -22,7 +22,8 @@ import lombok.AllArgsConstructor;
 public class RFIDLiftDataDAO {
     private static final String LOAD_SQL = "INSERT INTO RFIDLiftData (resortID, dayNum, skierID, liftID, time) VALUES (?,?,?,?,?)";
     private static final String VERT_SQL = "SELECT liftID FROM RFIDLiftData WHERE skierID=? AND dayNum=?";
-    private static final String RESET_SQL = "DELETE FROM RFIDLiftData";
+    private static final String TRUNCATE_SQL = "DELETE FROM RFIDLiftData; COMMIT;";
+    private static final String DELETE_SQL = "DELETE FROM RFIDLiftData WHERE dayNum=?; COMMIT;";
     private static final String COMMIT_SQL = "COMMIT";
 
     private static Map<Integer, Integer> liftHeights;
@@ -44,9 +45,17 @@ public class RFIDLiftDataDAO {
 
     public void reset() throws SQLException {
         try (Statement s = c.createStatement()) {
-            s.execute(RESET_SQL);
+            s.execute(TRUNCATE_SQL);
         }
     }
+
+    public void deleteByDay(int dayNum) throws SQLException {
+        try (CallableStatement p = c.prepareCall(DELETE_SQL)) {
+            p.setInt(1, dayNum);
+            p.execute();
+        }
+    }
+
 
     public Integer[] vert(int skierID, int dayNum) throws SQLException {
         try (CallableStatement p = c.prepareCall(VERT_SQL)) {

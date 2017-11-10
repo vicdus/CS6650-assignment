@@ -16,20 +16,14 @@ import java.util.stream.IntStream;
 
 public class LoadClient {
 
-    @Option(name = "-ip", usage = "ip address, default: localhost")
-    private String ip = "localhost";
+    private static final String LOGGER_NAME = "LoadClientLogger";
+    private static final String LOG_FILE = "LoadClientLog.txt";
 
     @Option(name = "-threads", usage = "threads number, default: 10")
     private int threads = 10;
 
-    @Option(name = "-port", usage = "port number, default: 8080")
-    private int port = 8080;
-
     @Option(name = "-source", usage = "ser file path")
     private String sourcePath = "./resource/BSDSAssignment2Day1.ser";
-
-    @Option(name = "-logfile", usage = "path of logging file, default: log.txt")
-    private String logFile = "log.txt";
 
     private void start(String[] args) throws IOException, ClassNotFoundException {
         OperationWrapper.parseSilently(args, this, "Invalid arguments!");
@@ -37,7 +31,7 @@ public class LoadClient {
         ConcurrentLinkedQueue<RFIDLiftData> queue;
         List<LoadClientHandler> threadInstances;
 
-        BufferedLogger logger = new BufferedLogger(logFile);
+        BufferedLogger logger = BufferedLogger.getOrCreateLogger(LOGGER_NAME, LOG_FILE);
         Stopwatch stopwatch = Stopwatch.createStopwatch();
         CyclicBarrier cb = new CyclicBarrier(threads + 1);
 
@@ -46,8 +40,8 @@ public class LoadClient {
                 .cb(cb)
                 .logger(logger)
                 .queue(queue)
-                .ip(ip)
-                .port(port)
+                .ip(OperationWrapper.readConfig("./resource/end_points.yml").get("server_ip"))
+                .port(Integer.parseInt(OperationWrapper.readConfig("./resource/end_points.yml").get("server_port")))
                 .build()
         ).collect(Collectors.toList());
 
@@ -57,7 +51,7 @@ public class LoadClient {
         OperationWrapper.uninterruptibleCyclicBarrierAwait(cb);
 
         logger.log("WALL " + stopwatch.readAndReset());
-        logger.persistLog();
+        logger.persist();
     }
 
 

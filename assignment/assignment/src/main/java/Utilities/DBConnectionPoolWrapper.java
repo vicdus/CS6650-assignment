@@ -16,10 +16,12 @@ public class DBConnectionPoolWrapper {
     static {
         Map<String, String> credentials = OperationWrapper.readConfig("./resource/credentials.yml");
         Map<String, String> config = OperationWrapper.readConfig("./resource/db_config.yml");
+        Map<String, String> endPoints = OperationWrapper.readConfig("./resource/end_points.yml");
+
 
         String url = "jdbc:postgresql://"
-                + config.get("db_endpoint") + ":"
-                + config.get("db_port") + "/"
+                + endPoints.get("db_ip") + ":"
+                + endPoints.get("db_port") + "/"
                 + config.get("db_name");
         String usr = credentials.get("db_usr");
         String pwd = credentials.get("db_pwd");
