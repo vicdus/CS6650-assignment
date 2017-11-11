@@ -25,11 +25,9 @@ public class MyVertClient {
     @Option(name = "-source", usage = "ser file path")
     private String sourcePath = "./resource/BSDSAssignment2Day1.ser";
 
-
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         new MyVertClient().start(args);
     }
-
 
     private void start(String[] args) throws IOException, ClassNotFoundException {
         OperationWrapper.parseSilently(args, this, "Invalid arguments!");
@@ -64,5 +62,6 @@ public class MyVertClient {
         OperationWrapper.uninterruptibleCyclicBarrierAwait(cb);
         logger.log("WALL " + stopwatch.readAndReset());
         logger.persist();
+        System.exit(0);
     }
 }

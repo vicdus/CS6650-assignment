@@ -52,6 +52,7 @@ public class LoadClient {
 
         logger.log("WALL " + stopwatch.readAndReset());
         logger.persist();
+        System.exit(0);
     }
 
 

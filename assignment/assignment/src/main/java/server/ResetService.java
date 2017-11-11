@@ -20,13 +20,13 @@ import java.sql.SQLException;
 public class ResetService {
 
     @DELETE
-    public Response resetAll(@PathParam("dayNum") int d) {
+    public Response resetAll(@PathParam("dayNum") int dayNum) {
         Connection conn = null;
         try {
             conn = DBConnectionPoolWrapper.getConnection();
             RFIDLiftDataDAO dao = new RFIDLiftDataDAO(conn);
-            if (d != -1) {
-                dao.deleteByDay(d);
+            if (dayNum != -1) {
+                dao.deleteByDay(dayNum);
             } else {
                 dao.reset();
             }

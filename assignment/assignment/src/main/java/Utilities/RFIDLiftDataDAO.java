@@ -22,7 +22,7 @@ import lombok.AllArgsConstructor;
 public class RFIDLiftDataDAO {
     private static final String LOAD_SQL = "INSERT INTO RFIDLiftData (resortID, dayNum, skierID, liftID, time) VALUES (?,?,?,?,?)";
     private static final String VERT_SQL = "SELECT liftID FROM RFIDLiftData WHERE skierID=? AND dayNum=?";
-    private static final String TRUNCATE_SQL = "DELETE FROM RFIDLiftData; COMMIT;";
+    private static final String TRUNCATE_SQL = "TRUNCATE TABLE rfidliftdata";
     private static final String DELETE_SQL = "DELETE FROM RFIDLiftData WHERE dayNum=?; COMMIT;";
     private static final String COMMIT_SQL = "COMMIT";
 

@@ -109,6 +109,11 @@
         <plugins>
 
             <plugin>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>2.3</version>
+            </plugin>
+
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>1.2.1</version>
@@ -135,23 +140,12 @@
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
-                <executions>
-                    <execution>
-                        <id>tomcat-run</id>
-                        <goals>
-                            <goal>exec-war-only</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <serverXml>src/main/webapp/server.xml</serverXml>
-                        </configuration>
-                    </execution>
-                </executions>
+                <configuration>
+                    <server>localhost</server>
+                </configuration>
             </plugin>
-            
 
         </plugins>
-
 
         <pluginManagement>
             <plugins>
@@ -162,7 +156,6 @@
                 </plugin>
             </plugins>
         </pluginManagement>
-
 
     </build>
 </project>

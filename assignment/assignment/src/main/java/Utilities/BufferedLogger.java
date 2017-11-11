@@ -2,9 +2,10 @@ package utilities;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,9 +13,10 @@ import lombok.NonNull;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BufferedLogger {
-    private static final Map<String, BufferedLogger> loggers = new HashMap<>();
+    private static final Map<String, BufferedLogger> loggers = new ConcurrentHashMap<>();
     private final ConcurrentLinkedQueue<String> buffer = new ConcurrentLinkedQueue<>();
     private static final int BUFFER_SIZE = 1000;
+
 
     static {
         Thread t = new Thread(() -> {
