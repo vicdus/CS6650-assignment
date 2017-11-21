@@ -15,23 +15,20 @@ import lombok.NonNull;
 public class BufferedLogger {
     private static final Map<String, BufferedLogger> loggers = new ConcurrentHashMap<>();
     private final ConcurrentLinkedQueue<String> buffer = new ConcurrentLinkedQueue<>();
-    private static final int BUFFER_SIZE = 1000;
-
+    @NonNull
+    private String fileName;
 
     static {
         Thread t = new Thread(() -> {
             while (true) {
                 for (BufferedLogger logger : loggers.values()) {
-                    if (logger.buffer.size() > BUFFER_SIZE) logger.persist();
+                    logger.persist();
                 }
             }
         });
         t.setPriority(Thread.MIN_PRIORITY);
         t.start();
     }
-
-    @NonNull
-    private String fileName;
 
     public synchronized static BufferedLogger getOrCreateLogger(String loggerName, String fileName) {
         if (loggers.containsKey(loggerName)) {
