@@ -18,7 +18,7 @@ import javax.ws.rs.core.Response;
 @Consumes(MediaType.TEXT_PLAIN)
 public class LoadService {
     private static final String LOGGER_NAME = "LoadServiceLogger";
-    private static final String LOG_FILE_NAME = "MyVertServiceLogger.txt";
+    private static final String LOG_FILE_NAME = "LoadServiceLogger.txt";
 
     @POST
     public Response getMsg(@PathParam("resortID") int resortID,

@@ -20,12 +20,12 @@ import lombok.SneakyThrows;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class LoadBuffer {
     private static final String LOGGER_NAME = "LOADBUFFER_LOGGER";
+    private static final String LOG_FILE_NAME = "DB_LOGGER.txt";
     private static final BlockingQueue<RFIDLiftData> buffer = new LinkedBlockingQueue<>();
     private static final int LOAD_THREAD_SIZE = 10;
 
-
     static {
-        BufferedLogger logger = BufferedLogger.getOrCreateLogger(LOGGER_NAME, "db_log.txt");
+        BufferedLogger logger = BufferedLogger.getOrCreateLogger(LOGGER_NAME, LOG_FILE_NAME);
         List<LoadHandler> handlers = IntStream.
                 range(0, LOAD_THREAD_SIZE)
                 .mapToObj(i -> new LoadHandler(buffer, logger))

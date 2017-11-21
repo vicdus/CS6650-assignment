@@ -17,7 +17,7 @@ import org.kohsuke.args4j.Option;
 public class MyVertClient {
 
     private static final String LOGGER_NAME = "MyVertClientLogger";
-    private static final String LOG_FILE = "MyVertClientLog.txt";
+    private static final String LOG_FILE = "MyVertClientLogger.txt";
 
     @Option(name = "-threads", usage = "threads number, default: 100")
     private int threads = 100;

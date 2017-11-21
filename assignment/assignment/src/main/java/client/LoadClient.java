@@ -17,10 +17,10 @@ import java.util.stream.IntStream;
 public class LoadClient {
 
     private static final String LOGGER_NAME = "LoadClientLogger";
-    private static final String LOG_FILE = "LoadClientLog.txt";
+    private static final String LOG_FILE = "LoadClientLogger.txt";
 
-    @Option(name = "-threads", usage = "threads number, default: 10")
-    private int threads = 10;
+    @Option(name = "-threads", usage = "threads number, default: 50")
+    private int threads = 50;
 
     @Option(name = "-source", usage = "ser file path")
     private String sourcePath = "./resource/BSDSAssignment2Day1.ser";
