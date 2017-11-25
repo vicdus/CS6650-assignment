@@ -61,7 +61,7 @@ class LoadHandler extends Thread {
             if (size < 100 || size % 1000 == 0) {
                 s.start();
                 dao.commit();
-                logger.log("DBCOMMIT  " + s.read() + " " + s.getStartTime());
+                logger.log("DBCOMMIT " + s.read() + " " + s.getStartTime());
             }
         }
     }
