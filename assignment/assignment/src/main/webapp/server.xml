@@ -5,7 +5,7 @@
                    acceptCount="65535"
         />
         <Engine name="Catalina" defaultHost="localhost">
-            <Host name="localhost" unpackWARs="false" autoDeploy="false"/>
+            <Host name="localhost" appBase="/home/ec2-user/CS6650-assignment/assignment/assignment/target"/>
         </Engine>
     </Service>
 </Server>
