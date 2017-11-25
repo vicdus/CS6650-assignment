@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.TimeUnit;
 
+import com.google.common.util.concurrent.Uninterruptibles;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -21,6 +23,7 @@ public class BufferedLogger {
     static {
         Thread t = new Thread(() -> {
             while (true) {
+                Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
                 for (BufferedLogger logger : loggers.values()) {
                     logger.persist();
                 }
