@@ -21,7 +21,7 @@ import org.apache.commons.dbutils.DbUtils;
 @Path("myvert/skierID/{skierID}/dayNum/{dayNum}")
 @Produces(MediaType.TEXT_PLAIN)
 public class MyVertService {
-    private static final String LOGGER_NAME = "LoadServiceLogger";
+    private static final String LOGGER_NAME = "MyVertServiceLogger";
     private static final String LOG_FILE_NAME = "MyVertServiceLogger.txt";
 
     @GET
