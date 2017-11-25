@@ -26,7 +26,6 @@ public class BufferedLogger {
                 }
             }
         });
-        t.setPriority(Thread.MIN_PRIORITY);
         t.start();
     }
 

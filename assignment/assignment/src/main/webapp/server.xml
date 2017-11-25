@@ -2,7 +2,7 @@
 <Server port="8081" shutdown="SHUTDOWN">
     <Service name="Catalina">
         <Connector port="8080" protocol="HTTP/1.1"
-                   maxThreads="200"
+                   maxThreads="100"
         />
         <Engine name="Catalina" defaultHost="localhost">
             <Host name="localhost" unpackWARs="false" autoDeploy="false"/>
