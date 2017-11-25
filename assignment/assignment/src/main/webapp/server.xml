@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <Server port="8081" shutdown="SHUTDOWN">
     <Service name="Catalina">
-        <Connector port="8080" protocol="HTTP/1.1"
-                   maxThreads="200"
+        <Connector port="8080" protocol="org.apache.coyote.http11.Http11NioProtocol"
+                   acceptCount="65535"
         />
         <Engine name="Catalina" defaultHost="localhost">
             <Host name="localhost" unpackWARs="false" autoDeploy="false"/>
