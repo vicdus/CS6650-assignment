@@ -141,6 +141,7 @@
                 <artifactId>tomcat7-maven-plugin</artifactId>
                 <version>2.2</version>
                 <configuration>
+                    <serverXml>src/main/webapp/server.xml</serverXml>
                     <server>localhost</server>
                 </configuration>
             </plugin>
