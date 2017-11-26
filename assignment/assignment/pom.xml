@@ -111,6 +111,9 @@
             <plugin>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>2.3</version>
+                <configuration>
+                    <warName>assignment2</warName>
+                </configuration>
             </plugin>
 
             <plugin>
