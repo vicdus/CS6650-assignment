@@ -33,7 +33,7 @@ public class DBConnectionPoolWrapper {
         ds.setPassword(pwd);
         ds.setMaxActive(dbConnPoolSize);
         ds.setInitialSize(10);
-        ds.setTestOnBorrow(false);
+        ds.setTestOnBorrow(true);
         ds.setDefaultAutoCommit(false);
     }
 
