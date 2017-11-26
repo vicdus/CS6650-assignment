@@ -62,6 +62,7 @@ public class MyVertClient {
         OperationWrapper.uninterruptibleCyclicBarrierAwait(cb);
         logger.log("WALL " + stopwatch.readAndReset());
         logger.persist();
+        logger.done();
         System.exit(0);
     }
 }

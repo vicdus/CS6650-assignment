@@ -19,10 +19,11 @@ public class BufferedLogger {
     private final ConcurrentLinkedQueue<String> buffer = new ConcurrentLinkedQueue<>();
     @NonNull
     private String fileName;
+    private String loggerName;
 
     static {
         Thread t = new Thread(() -> {
-            while (true) {
+            while (!loggers.isEmpty()) {
                 Uninterruptibles.sleepUninterruptibly(1, TimeUnit.SECONDS);
                 for (BufferedLogger logger : loggers.values()) {
                     logger.persist();
@@ -32,16 +33,20 @@ public class BufferedLogger {
         t.start();
     }
 
+
     public synchronized static BufferedLogger getOrCreateLogger(String loggerName, String fileName) {
         if (loggers.containsKey(loggerName)) {
             return loggers.get(loggerName);
         } else {
-            BufferedLogger logger = new BufferedLogger(fileName);
+            BufferedLogger logger = new BufferedLogger(fileName, loggerName);
             loggers.put(loggerName, logger);
             return logger;
         }
     }
 
+    public void done() {
+        loggers.remove(this.loggerName);
+    }
 
     public void log(String message) {
         this.buffer.add(message);
