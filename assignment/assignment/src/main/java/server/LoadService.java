@@ -32,7 +32,7 @@ public class LoadService {
         s.start();
         LoadBuffer.put(new RFIDLiftData(resortID, dayNum, skierID, liftID, timestamp));
         Response response = Response.ok("success").build();
-        if (dayNum != -1) logger.log("POST_RESPONSE " + s.read() + " " + s.getStartTime());
+        logger.log("POST_RESPONSE " + s.read() + " " + s.getStartTime());
         return response;
     }
 }

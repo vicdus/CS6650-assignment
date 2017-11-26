@@ -33,7 +33,7 @@ public class MyVertService {
         Integer[] res = new RFIDLiftDataDAO(conn).vert(skierID, dayNum);
         DbUtils.closeQuietly(conn);
         Response response = Response.ok(res[0] + " " + res[1], MediaType.TEXT_PLAIN).build();
-        logger.log("GET_RESPONSE " + s.read() + " " + s.getStartTime());
+        if (dayNum != -1) logger.log("GET_RESPONSE " + s.read() + " " + s.getStartTime());
         return response;
     }
 
