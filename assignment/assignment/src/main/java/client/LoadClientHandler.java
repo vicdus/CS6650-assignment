@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CyclicBarrier;
 
+import com.google.common.base.Preconditions;
+
 
 @Builder
 public final class LoadClientHandler extends Thread {
@@ -50,6 +52,7 @@ public final class LoadClientHandler extends Thread {
                     .target(buildURL(r))
                     .request(MediaType.TEXT_PLAIN)
                     .post(Entity.text(null));
+            Preconditions.checkArgument(response.getStatus() == 200);
             response.close();
             logger.log("POST " + s.read() + " " + s.getStartTime());
             s.start();

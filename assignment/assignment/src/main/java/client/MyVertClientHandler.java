@@ -10,6 +10,8 @@ import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.client.ClientProperties;
 
+import com.google.common.base.Preconditions;
+
 import utilities.BufferedLogger;
 import utilities.OperationWrapper;
 import utilities.Stopwatch;
@@ -44,6 +46,7 @@ public class MyVertClientHandler extends Thread {
                     .target(buildURL(params[0], params[1]))
                     .request(MediaType.TEXT_PLAIN)
                     .get();
+            Preconditions.checkArgument(response.getStatus() == 200);
             response.close();
             logger.log("GET " + s.read() + " " + s.getStartTime());
             params = queue.poll();
